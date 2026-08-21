@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Chi tiết giao dịch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="page">
+    <div class="card detail-card">
+        <h1 class="form-title">Chi tiết giao dịch</h1>
+
+        <div class="detail-grid">
+            <div class="detail-label">Mã giao dịch</div>
+            <div class="detail-value" th:text="${gd.maGiaoDich}">MGD-0001</div>
+
+            <div class="detail-label">Loại bất động sản</div>
+            <div class="detail-value" th:text="${gd.loaiDichVu.nhan}">Nhà đất</div>
+
+            <div class="detail-label">Ngày giao dịch</div>
+            <div class="detail-value" th:text="${#temporals.format(gd.ngayGiaoDich, 'dd/MM/yyyy')}">12/12/2019</div>
+
+            <div class="detail-label">Đơn giá (VND/m2)</div>
+            <div class="detail-value" th:text="${#numbers.formatDecimal(gd.donGia, 1, 'POINT', 0, 'POINT')}">2.000.000</div>
+
+            <div class="detail-label">Diện tích (m2)</div>
+            <div class="detail-value" th:text="${#numbers.formatDecimal(gd.dienTich, 1, 'POINT', 0, 'POINT')}">100</div>
+
+            <div class="detail-label">Tên khách hàng</div>
+            <div class="detail-value" th:text="${gd.khachHang.tenKhachHang}">Nguyễn Văn A</div>
+
+            <div class="detail-label">Số điện thoại</div>
+            <div class="detail-value" th:text="${gd.khachHang.soDienThoai}">0905973155</div>
+
+            <div class="detail-label">Email</div>
+            <div class="detail-value" th:text="${gd.khachHang.email}">nguyenvana@gmail.com</div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-warning" onclick="confirmDelete()">Xóa</button>
+            <a th:href="@{/}" class="btn btn-primary">Quay lại</a>
+        </div>
+
+        <form id="delete-form" method="post"
+              th:action="@{'/giao-dich/' + ${gd.maGiaoDich} + '/xoa'}"
+              style="display:none;"></form>
+    </div>
+</div>
+
+<script>
+    function confirmDelete() {
+        if (confirm("Bạn có muốn xóa giao dịch này không?")) {
+            document.getElementById("delete-form").submit();
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thêm khách hàng mới</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="page">
+    <div class="card form-card">
+        <h1 class="form-title">Thêm khách hàng mới</h1>
+
+        <div class="flash flash-error" th:if="${formError}" th:text="${formError}"></div>
+
+        <form th:action="@{/khach-hang/them-moi}" th:object="${form}" method="post" novalidate>
+            <input type="hidden" name="redirectTo" th:if="${redirectTo}" th:value="${redirectTo}"/>
+
+            <div class="form-group">
+                <label for="maKhachHang">Mã khách hàng</label>
+                <input type="text" id="maKhachHang" th:field="*{maKhachHang}" placeholder="VD: KH-006"/>
+                <p class="field-error" th:if="${errors['maKhachHang']}" th:text="${errors['maKhachHang']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="tenKhachHang">Tên khách hàng</label>
+                <input type="text" id="tenKhachHang" th:field="*{tenKhachHang}" placeholder="VD: Nguyễn Văn A"/>
+                <p class="field-error" th:if="${errors['tenKhachHang']}" th:text="${errors['tenKhachHang']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="soDienThoai">Số điện thoại</label>
+                <input type="text" id="soDienThoai" th:field="*{soDienThoai}" placeholder="VD: 0912345678"/>
+                <p class="field-error" th:if="${errors['soDienThoai']}" th:text="${errors['soDienThoai']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" th:field="*{email}" placeholder="VD: a@example.com"/>
+                <p class="field-error" th:if="${errors['email']}" th:text="${errors['email']}"></p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a th:href="${redirectTo != null and !redirectTo.isEmpty()} ? ${redirectTo} : @{/khach-hang}"
+                   class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

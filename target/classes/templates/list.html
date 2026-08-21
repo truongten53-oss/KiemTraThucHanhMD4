@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Danh sách giao dịch nhà đất</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="page">
+
+    <div class="flash flash-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+    <div class="flash flash-error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+    <div class="card">
+        <div class="toolbar">
+            <h1>Danh sách giao dịch nhà đất</h1>
+
+            <a th:href="@{/giao-dich/them-moi}" class="btn btn-add">+ Thêm mới</a>
+            <a th:href="@{/khach-hang}" class="btn btn-secondary">Khách hàng</a>
+
+            <form class="search-form" method="get" th:action="@{/}">
+                <select name="loaiDichVu">
+                    <option value="">Chọn loại bất động sản</option>
+                    <option th:each="lv : ${loaiDichVuOptions}"
+                            th:value="${lv.name()}"
+                            th:text="${lv.nhan}"
+                            th:selected="${filterLoai == lv.name()}">Loại</option>
+                </select>
+                <input type="text" name="tenKhachHang" placeholder="Tên khách hàng" th:value="${filterTen}">
+                <button type="submit" class="btn btn-search">Tìm kiếm</button>
+                <a th:if="${filterTen != null and filterTen != '' or filterLoai != null and filterLoai != ''}"
+                   th:href="@{/}" class="btn btn-clear">Xóa lọc</a>
+            </form>
+        </div>
+
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Mã giao dịch</th>
+                <th>Tên khách hàng</th>
+                <th>Ngày giao dịch</th>
+                <th>Loại dịch vụ</th>
+                <th>Đơn giá (VND/m2)</th>
+                <th>Diện tích (m2)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${rows}">
+                <td th:text="${r.maGiaoDich}">MGD-0001</td>
+                <td th:text="${r.khachHang.tenKhachHang}">Nguyễn Văn A</td>
+                <td th:text="${#temporals.format(r.ngayGiaoDich, 'dd/MM/yyyy')}">12/12/2020</td>
+                <td th:text="${r.loaiDichVu.nhan}">Nhà đất</td>
+                <td th:text="${#numbers.formatDecimal(r.donGia, 1, 'POINT', 0, 'POINT')}">2.000.000</td>
+                <td th:text="${#numbers.formatDecimal(r.dienTich, 1, 'POINT', 0, 'POINT')}">100</td>
+                <td>
+                    <a class="link-detail" th:href="@{'/giao-dich/' + ${r.maGiaoDich}}">Chi tiết</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(rows)}">
+                <td colspan="7" class="empty-row">Không tìm thấy giao dịch nào phù hợp.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

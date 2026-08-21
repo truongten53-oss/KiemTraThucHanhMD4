@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thêm mới giao dịch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="page">
+    <div class="card form-card">
+        <h1 class="form-title">Thêm mới giao dịch</h1>
+
+        <div class="flash flash-error" th:if="${formError}" th:text="${formError}"></div>
+
+        <form th:action="@{/giao-dich/them-moi}" th:object="${form}" method="post" novalidate>
+
+            <div class="form-group">
+                <label for="maGiaoDich">Mã giao dịch</label>
+                <input type="text" id="maGiaoDich" th:field="*{maGiaoDich}" placeholder="VD: MGD-0004"/>
+                <p class="field-error" th:if="${errors['maGiaoDich']}" th:text="${errors['maGiaoDich']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="maKhachHang">Tên khách hàng</label>
+                <div class="input-with-action">
+                    <select id="maKhachHang" th:field="*{maKhachHang}">
+                        <option value="">Chọn khách hàng</option>
+                        <option th:each="kh : ${customers}"
+                                th:value="${kh.maKhachHang}"
+                                th:text="${kh.tenKhachHang}">Khách hàng</option>
+                    </select>
+                    <a th:href="@{/khach-hang/them-moi(redirectTo='/giao-dich/them-moi')}" class="btn btn-add-inline">+ Khách hàng mới</a>
+                </div>
+                <p class="field-error" th:if="${errors['maKhachHang']}" th:text="${errors['maKhachHang']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label>Loại bất động sản</label>
+                <div class="radio-row">
+                    <label class="radio-option" th:each="lv : ${loaiDichVuOptions}">
+                        <input type="radio" th:field="*{loaiDichVu}" th:value="${lv.name()}"/>
+                        <span th:text="${lv.nhan}">Đất</span>
+                    </label>
+                </div>
+                <p class="field-error" th:if="${errors['loaiDichVu']}" th:text="${errors['loaiDichVu']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="ngayGiaoDich">Ngày giao dịch</label>
+                <input type="date" id="ngayGiaoDich" th:field="*{ngayGiaoDich}"/>
+                <p class="field-error" th:if="${errors['ngayGiaoDich']}" th:text="${errors['ngayGiaoDich']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="donGia">Đơn giá (VND/m2)</label>
+                <input type="text" id="donGia" th:field="*{donGia}" placeholder="VD: 2000000"/>
+                <p class="field-error" th:if="${errors['donGia']}" th:text="${errors['donGia']}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="dienTich">Diện tích (m2)</label>
+                <input type="text" id="dienTich" th:field="*{dienTich}" placeholder="VD: 100"/>
+                <p class="field-error" th:if="${errors['dienTich']}" th:text="${errors['dienTich']}"></p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a th:href="@{/}" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
